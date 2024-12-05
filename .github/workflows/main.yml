@@ -40,9 +40,17 @@ jobs:
         run: |
           docker-compose build
 
-      - name: Run tests
+      - name: Run application
         run: |
           docker-compose up -d
-          sleep 10
-          curl http://localhost:5000
+          sleep 10  # Даем время контейнерам на запуск
+
+      - name: Test application
+        run: |
+          curl http://localhost:5000/add  # Добавляем данные
+          sleep 2  # Даем время на добавление данных
+          curl http://localhost:5000/greetings  # Получаем данные
+
+      - name: Tear down application
+        run: |
           docker-compose down
